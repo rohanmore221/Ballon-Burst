@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Game</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: skyblue;
+        }
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 80vh;
+            overflow: hidden;
+        }
+        #balloon {
+            position: absolute;
+            width: 50px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #pump {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Balloon Game</h1>
+    <div id="game-container">
+        <img id="balloon" src="ballon.png" alt="Balloon">
+    </div>
+    <button id="pump">Pump Air</button>
+    
+    <script>
+        let balloon = document.getElementById("balloon");
+        let pump = document.getElementById("pump");
+        let size = 50;
+        let maxSize = 200;
+        let gameContainer = document.getElementById("game-container");
+
+        // Position balloon randomly at start
+        function resetBalloonPosition() {
+            balloon.style.left = Math.random() * (window.innerWidth - 100) + "px";
+            balloon.style.top = Math.random() * (window.innerHeight - 200) + "px";
+        }
+        resetBalloonPosition();
+
+        // Inflate balloon
+        pump.addEventListener("click", function() {
+            if (size < maxSize) {
+                size += 10;
+                balloon.style.transform = `scale(${size / 50})`;
+            } else {
+                moveBalloonRandomly();
+            }
+        });
+
+        // Move balloon randomly after inflation
+        function moveBalloonRandomly() {
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 200);
+            balloon.style.left = `${x}px`;
+            balloon.style.top = `${y}px`;
+        }
+
+        // Burst balloon on tap
+        balloon.addEventListener("click", function() {
+            balloon.style.display = "none";
+            setTimeout(() => {
+                balloon.style.display = "block";
+                size = 50;
+                balloon.style.transform = `scale(1)`;
+                resetBalloonPosition();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
